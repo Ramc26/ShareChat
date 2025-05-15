@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ShareChat - Terminal-Based Collaboration Tool</title>
+
+  <!-- Bootstrap -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
+  <!-- Google Fonts: Space Grotesk, Inter, Poppins, Montserrat & Fira Code -->
+  <link
+    href="https://fonts.googleapis.com/css2?
+      family=Space+Grotesk:wght@700
+      &family=Inter:wght@400;600
+      &family=Poppins:wght@400;500;600
+      &family=Montserrat:wght@300;500
+      &family=Fira+Code:wght@400;700
+      &display=swap"
+    rel="stylesheet"
+  /> <!-- Fira Code import :contentReference[oaicite:3]{index=3} -->
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+  />
+
+  <style>
+    :root {
+      --primary: #7c3aed;
+      --secondary: #10b981;
+      --accent: #f59e0b;
+      --background: #0f172a;
+      --text: #f8fafc;
+    }
+
+    body {
+      background-color: var(--background);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      padding-bottom: 3.5rem; /* Reserve for sticky footer */
+      position: relative;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* Apply Fira Code to all paragraphs */
+    p, .lead {
+      font-family: 'Fira Code', monospace; /* monospace fallback :contentReference[oaicite:4]{index=4} */
+    }
+
+    .hero h1 {
+      font-size: 4.5rem;
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 30px rgba(124, 58, 237, 0.3);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 30px rgba(16,185,129,0.1);
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: 0.5s;
+    }
+    .feature-card:hover::before {
+      left: 100%;
+    }
+
+    .github-btn {
+      border: 2px solid var(--primary);
+      overflow: hidden;
+      position: relative;
+      transition: all 0.3s ease;
+      color: var(--primary);
+    }
+    .github-btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: 0.5s;
+    }
+    .github-btn:hover::before {
+      left: 100%;
+    }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50%    { transform: translateY(-20px); }
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Sticky footer */
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.03);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    footer span {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.85rem;
+      color: var(--text);
+    }
+    footer a {
+      color: var(--secondary);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    footer a:hover {
+      color: var(--primary);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container py-5">
+    <section class="hero text-center py-5">
+      <h1 class="mb-4"><b>ShareChat</b></h1>
+      <p class="lead fade-in"><code>Why switch apps? Ping & 🚀 share all from your shell!</code></p>
+      <a
+        href="https://github.com/ramc26/ShareChat"
+        class="btn github-btn d-inline-flex align-items-center py-3 px-4 mt-3 fade-in"
+      >
+        <i class="fab fa-github fs-4 me-2"></i>
+        <span>Star on GitHub</span>
+      </a>
+    </section>
+
+    <section class="backstory card border-0 bg-transparent mb-5 fade-in">
+      <div class="card-body">
+        <h2 class="mb-4" style="color: ivory;">📖 The Origin Story</h2>
+        <p style="color: ivory;">
+          Born from the daily struggle of juggling devices and endless app switching.
+          Why send files through 3 apps when you can just <code>sendfile</code>? 🚀
+        </p>
+      </div>
+    </section>
+
+    <div class="row g-4 mb-5">
+      <div class="col-lg-4">
+        <div class="feature-card p-4 h-100 fade-in">
+          <h3 class="mb-3">🚀 Instant Messaging</h3>
+          <p>Fire messages to Google Chat faster than you can say "ping"</p>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="feature-card p-4 h-100 fade-in">
+          <h3 class="mb-3">📁 Smart Organization</h3>
+          <p>Files auto-sorted like magic ✨ (but it's just good code)</p>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="feature-card p-4 h-100 fade-in">
+          <h3 class="mb-3">⚡ Terminal Power</h3>
+          <p>Because real devs never leave their terminal 😎</p>
+        </div>
+      </div>
+    </div>
+
+    <section class="setup-steps mb-5 fade-in">
+      <h2 class="mb-4">🛠️ 2-Minute Setup</h2>
+      <div class="card bg-transparent border-secondary mb-3">
+        <div class="card-body">
+          <pre class="mb-0" style="color: #ff79c6"><code>git clone https://github.com/yourusername/ShareChat.git
+cd ShareChat && bash setup.sh</code></pre>
+        </div>
+      </div>
+      <p>Follow the prompts and you’re golden 🌟</p>
+    </section>
+  </div>
+
+  <footer>
+    <span>
+      © 2023 ShareChat | Crafted with 💖 (and ☕) by
+      <a href="https://ramc26.github.io/RamTechSuite/" target="_blank">itsmeramc</a>
+    </span>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Ripple effect on feature cards
+    document.querySelectorAll('.feature-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--x', `${x}px`);
+        card.style.setProperty('--y', `${y}px`);
+      });
+    });
+  </script>
+</body>
+</html>
