@@ -5,14 +5,8 @@ import argparse
 import requests
 from requests.exceptions import RequestException
 
-# Upload folder IDs
-IMAGE_FOLDER_ID  = "f0c5703a-1a54-4447-9496-f0e0de57f44b"
-PYTHON_FOLDER_ID = "a834a081-3be8-49fe-b92c-f6e48a7e6f66"
-OTHER_FOLDER_ID  = "f38fa7e0-f164-4737-9b5e-76274410ed90"
-
 # File extensions
 IMAGE_EXTS = {"png", "jpg", "jpeg", "gif", "bmp"}
-
 
 def send_text_message(webhook: str, text: str):
     """Send a simple text message to Google Chat webhook."""
@@ -21,15 +15,20 @@ def send_text_message(webhook: str, text: str):
     resp.raise_for_status()
     print("✅ Message sent! 🎉")
 
-
 def choose_folder_id(ext: str) -> str:
     """Return the appropriate GoFile folder ID based on file extension."""
-    if ext in IMAGE_EXTS:
-        return IMAGE_FOLDER_ID
-    if ext == "py":
-        return PYTHON_FOLDER_ID
-    return OTHER_FOLDER_ID
+    image_id  = os.environ.get("IMAGE_FOLDER_ID")
+    python_id = os.environ.get("PYTHON_FOLDER_ID")
+    other_id  = os.environ.get("OTHER_FOLDER_ID")
 
+    if not all([image_id, python_id, other_id]):
+        raise EnvironmentError("Missing one or more folder IDs in environment variables.")
+
+    if ext in IMAGE_EXTS:
+        return image_id
+    if ext == "py":
+        return python_id
+    return other_id
 
 def upload_file_to_gofile(path: str, token: str, folder_id: str) -> str:
     """Upload the file to GoFile and return the download link."""
@@ -52,11 +51,9 @@ def upload_file_to_gofile(path: str, token: str, folder_id: str) -> str:
     print(f"🔗 File uploaded! Download link: {link}")
     return link
 
-
 def send_file_link(webhook: str, link: str):
     """Send the GoFile download link to the Chat webhook."""
     send_text_message(webhook, f"📁 Your file is ready: {link}")
-
 
 def main():
     parser = argparse.ArgumentParser(
@@ -83,20 +80,18 @@ def main():
             print(f"⚠️ Ooops! File not found: {path}", file=sys.stderr)
             sys.exit(1)
         ext = os.path.splitext(path)[1].lower().lstrip('.')
-        folder_id = choose_folder_id(ext)
         try:
+            folder_id = choose_folder_id(ext)
             link = upload_file_to_gofile(path, token, folder_id)
             send_file_link(webhook, link)
         except Exception as e:
             err = f"⚠️ Ooops! Error: {e}"
             print(err, file=sys.stderr)
-            # send error to chat
             try:
                 requests.post(webhook, json={"text": err})
             except:
                 pass
             sys.exit(1)
-
 
 if __name__ == "__main__":
     main()
